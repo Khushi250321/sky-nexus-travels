@@ -58,12 +58,12 @@ nav.sc{background:rgba(5,13,30,.96);backdrop-filter:blur(18px);border-bottom-col
 .mob-menu a{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);text-decoration:none;padding:10px 0;border-bottom:1px solid var(--border)}
 
 /* ══ HERO ══ */
-#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--navy);padding-top:68px}
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--navy);padding-top:68px;width:100%;box-sizing:border-box}
 .h-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 0,rgba(201,162,82,.07) 0,transparent 60%),radial-gradient(ellipse 30% 30% at 15% 85%,rgba(201,162,82,.04) 0,transparent 50%)}
 .stars-c{position:absolute;inset:0}
 .star{position:absolute;border-radius:50%;background:var(--gold3);animation:tw 3s ease-in-out infinite}
 @keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
-.h-content{position:relative;z-index:1;padding:60px 24px 0;max-width:860px}
+.h-content{position:relative;z-index:1;padding:60px 24px 0;max-width:860px;margin:0 auto;text-align:center;width:100%}
 .h-eyebrow{display:inline-flex;align-items:center;gap:14px;margin-bottom:24px}
 .h-eyebrow::before,.h-eyebrow::after{content:'';width:32px;height:1px;background:var(--gold)}
 .h-title{font-size:clamp(40px,7vw,90px);color:var(--cream);font-weight:300;margin-bottom:12px}
@@ -265,13 +265,13 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
 .f-bottom a{color:var(--gold);text-decoration:none}
 
 /* ══ WA FLOAT ══ */
-.wa-fl{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.wa-fl{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .wa-tip{background:var(--navy3);border:1px solid rgba(37,211,102,.2);color:var(--text);padding:9px 14px;font-size:12px;white-space:nowrap;opacity:0;transform:translateX(8px);transition:all .3s;pointer-events:none}
 .wa-fl:hover .wa-tip{opacity:1;transform:none}
-.wa-circle{position:relative}
-.wa-pulse{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(37,211,102,.35);animation:pulse 2.2s ease-out infinite;bottom:0;right:0}
+.wa-circle{position:relative;z-index:9999}
+.wa-pulse{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(37,211,102,.35);animation:pulse 2.2s ease-out infinite;bottom:0;right:0;z-index:1;pointer-events:none}
 @keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
-.wa-a{width:52px;height:52px;background:var(--wa);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s;box-shadow:0 4px 20px rgba(37,211,102,.28)}
+.wa-a{width:52px;height:52px;background:var(--wa);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s;box-shadow:0 4px 20px rgba(37,211,102,.28);position:relative;z-index:9999;cursor:pointer}
 .wa-a:hover{transform:scale(1.1)}
 .wa-a svg{width:26px;height:26px;fill:#fff}
 
