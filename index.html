@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sky Nexus Travels — Your Personal Flight Expert</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Cinzel:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#050d1e;--navy2:#081220;--navy3:#0d1c35;--navy4:#102040;
+  --gold:#c9a252;--gold2:#e8c47a;--gold3:#f5d78e;
+  --cream:#f5f0e8;--white:#fff;
+  --text:#e0dbd2;--text2:#a8a098;--text3:#6a6258;
+  --border:rgba(201,162,82,.18);--border2:rgba(201,162,82,.38);
+  --green:#4ade80;--wa:#25d366;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--navy)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+::selection{background:rgba(201,162,82,.25);color:var(--gold3)}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.15}
+.label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500}
+.gold{color:var(--gold2)}
+.divider{width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto}
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+section{position:relative;overflow:hidden}
+.s-head{text-align:center;margin-bottom:56px}
+.s-head h2{font-size:clamp(30px,4vw,50px);color:var(--cream);margin-top:10px}
+.s-head p{color:var(--text2);max-width:520px;margin:14px auto 0;font-size:15px}
+
+/* BTNs */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 30px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;border:1px solid var(--gold);color:var(--gold2);background:transparent}
+.btn:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px)}
+.btn-fill{background:var(--gold);color:var(--navy);border:1px solid var(--gold)}
+.btn-fill:hover{background:var(--gold2)}
+
+/* FADE */
+.fi{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.fi.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ══ NAV ══ */
+nav{position:fixed;top:0;inset-inline:0;z-index:1000;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;transition:all .4s;border-bottom:1px solid transparent}
+nav.sc{background:rgba(5,13,30,.96);backdrop-filter:blur(18px);border-bottom-color:var(--border)}
+.n-logo{text-decoration:none;display:flex;flex-direction:column}
+.n-logo b{font-family:'Cinzel',serif;font-size:17px;color:var(--gold2);letter-spacing:2px;font-weight:600}
+.n-logo small{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text3);text-transform:uppercase}
+.n-links{display:flex;gap:28px;list-style:none}
+.n-links a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .3s;padding-bottom:2px;border-bottom:1px solid transparent}
+.n-links a:hover{color:var(--gold2);border-bottom-color:var(--gold)}
+.n-wa{display:flex;align-items:center;gap:7px;padding:9px 18px;border:1px solid rgba(37,211,102,.35);color:var(--wa);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-decoration:none;text-transform:uppercase;transition:all .3s}
+.n-wa:hover{background:rgba(37,211,102,.08)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.ham span{width:22px;height:1.5px;background:var(--gold);transition:all .3s}
+.mob-menu{display:flex;flex-direction:column;position:fixed;top:68px;inset-inline:0;background:rgba(5,13,30,.98);backdrop-filter:blur(20px);padding:28px 32px;gap:20px;transform:translateY(-110%);transition:transform .4s;z-index:999;border-bottom:1px solid var(--border)}
+.mob-menu.open{transform:none}
+.mob-menu a{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);text-decoration:none;padding:10px 0;border-bottom:1px solid var(--border)}
+
+/* ══ HERO ══ */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--navy);padding-top:68px}
+.h-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 0,rgba(201,162,82,.07) 0,transparent 60%),radial-gradient(ellipse 30% 30% at 15% 85%,rgba(201,162,82,.04) 0,transparent 50%)}
+.stars-c{position:absolute;inset:0}
+.star{position:absolute;border-radius:50%;background:var(--gold3);animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
+.h-content{position:relative;z-index:1;padding:60px 24px 0;max-width:860px}
+.h-eyebrow{display:inline-flex;align-items:center;gap:14px;margin-bottom:24px}
+.h-eyebrow::before,.h-eyebrow::after{content:'';width:32px;height:1px;background:var(--gold)}
+.h-title{font-size:clamp(40px,7vw,90px);color:var(--cream);font-weight:300;margin-bottom:12px}
+.h-title em{font-style:italic;color:var(--gold2)}
+.h-sub{font-size:clamp(15px,2vw,19px);color:var(--text2);font-weight:300;max-width:560px;margin:0 auto 16px;letter-spacing:.3px}
+.h-promise{display:inline-flex;align-items:center;gap:8px;background:rgba(201,162,82,.07);border:1px solid var(--border);padding:9px 20px;margin-bottom:40px}
+.h-promise span{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.h-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.h-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;animation:bob 2s ease-in-out infinite;cursor:pointer}
+.h-scroll span{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--text3);text-transform:uppercase}
+.h-scroll-line{width:1px;height:36px;background:linear-gradient(180deg,var(--gold),transparent)}
+@keyframes bob{0%,100%{transform:translateX(-50%)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ── HERO STATS ── */
+.h-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);background:rgba(9,18,32,.65);backdrop-filter:blur(12px);margin-top:64px}
+.h-stat{padding:24px 20px;text-align:center;border-right:1px solid var(--border)}
+.h-stat:last-child{border-right:none}
+.h-stat-n{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--gold2);line-height:1}
+.h-stat-l{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:5px}
+
+/* ══ TICKER ══ */
+.ticker{background:var(--gold);padding:13px 0;overflow:hidden}
+.ticker-t{display:flex;animation:tick 22s linear infinite;width:max-content}
+.ticker-i{display:flex;align-items:center;gap:14px;padding:0 28px;white-space:nowrap;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--navy);font-weight:600}
+.tdot{width:3px;height:3px;background:var(--navy2);border-radius:50%}
+@keyframes tick{0%{transform:none}100%{transform:translateX(-50%)}}
+
+/* ══ WHY US (USPs) ══ */
+#why{padding:96px 0;background:var(--navy2)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border)}
+.why-card{padding:48px 36px;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .4s}
+.why-card:last-child{border-right:none}
+.why-card:hover{background:rgba(201,162,82,.04)}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
+.why-card:hover::before{transform:scaleX(1)}
+.why-icon{font-size:32px;margin-bottom:20px;display:block}
+.why-card h3{font-size:22px;color:var(--cream);margin-bottom:12px}
+.why-card p{font-size:14px;color:var(--text2);line-height:1.75}
+.why-tag{display:inline-block;margin-top:16px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border2);color:var(--gold)}
+
+/* ══ HOW IT WORKS ══ */
+#how{padding:96px 0;background:var(--navy)}
+.how-steps{position:relative;display:flex;flex-direction:column;gap:0;max-width:780px;margin:0 auto}
+.how-line{position:absolute;left:27px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--border2) 10%,var(--border2) 90%,transparent);z-index:0}
+.step{display:flex;gap:32px;align-items:flex-start;padding:36px 0;border-bottom:1px solid var(--border);position:relative;z-index:1}
+.step:last-child{border-bottom:none}
+.step-num{width:56px;height:56px;border:1px solid var(--border2);background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Cinzel',serif;font-size:14px;color:var(--gold);font-weight:600;transition:all .4s}
+.step:hover .step-num{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.step-body h3{font-size:22px;color:var(--cream);margin-bottom:8px}
+.step-body p{font-size:14px;color:var(--text2);line-height:1.75;max-width:580px}
+.step-tag{margin-top:10px;display:inline-flex;align-items:center;gap:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+.step-tag::before{content:'';width:14px;height:1px;background:var(--gold)}
+
+/* ══ SERVICES ══ */
+#services{padding:96px 0;background:var(--navy2)}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.svc-card{background:var(--navy3);border:1px solid var(--border);padding:36px;display:flex;gap:24px;align-items:flex-start;transition:all .4s;cursor:default}
+.svc-card:hover{border-color:var(--gold2);transform:translateY(-3px)}
+.svc-icon-box{width:52px;height:52px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:var(--gold)}
+.svc-card h3{font-size:22px;color:var(--cream);margin-bottom:8px}
+.svc-card p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--text3)}
+.svc-highlight{background:linear-gradient(135deg,var(--navy3),rgba(201,162,82,.04));border-color:rgba(201,162,82,.35)}
+.svc-highlight .svc-icon-box{border-color:var(--gold);background:rgba(201,162,82,.06)}
+
+/* ══ REAL REVIEWS ══ */
+#reviews{padding:96px 0;background:var(--navy)}
+.reviews-intro{max-width:640px;margin:0 auto 48px;text-align:center}
+.reviews-intro p{font-size:15px;color:var(--text2);line-height:1.8}
+.reviews-intro em{color:var(--gold2);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:18px}
+.r-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.r-card{background:var(--navy3);border:1px solid var(--border);overflow:hidden;transition:all .4s;cursor:pointer}
+.r-card:hover{border-color:var(--gold2);transform:translateY(-4px)}
+.r-screen{height:220px;background:var(--navy4);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.r-screen-mock{width:100%;height:100%;display:flex;flex-direction:column;background:var(--navy);position:relative}
+.r-screen-mock .r-header{background:var(--navy3);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.r-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:10px;color:var(--navy);font-weight:600;flex-shrink:0}
+.r-hname{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase}
+.r-hsub{font-size:10px;color:var(--green)}
+.r-msgs{display:flex;flex-direction:column;gap:7px;padding:12px;flex:1;overflow:hidden}
+.r-msg{max-width:82%;padding:7px 11px;font-size:11px;line-height:1.45;color:var(--text)}
+.r-msg.them{background:rgba(255,255,255,.06);border-radius:0 8px 8px 8px;border:1px solid var(--border);align-self:flex-start;color:var(--text2)}
+.r-msg.us{background:rgba(201,162,82,.12);border-radius:8px 0 8px 8px;border:1px solid rgba(201,162,82,.2);align-self:flex-end;color:var(--gold3)}
+.r-wa-label{position:absolute;top:8px;right:8px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);padding:3px 8px;font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.r-photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--navy3);position:relative}
+.r-photo-placeholder .r-icon{font-size:36px;color:rgba(201,162,82,.2)}
+.r-photo-placeholder p{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.r-photo-placeholder .upload-hint{position:absolute;bottom:12px;font-size:10px;color:var(--text3)}
+.r-info{padding:18px 20px}
+.r-info .r-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:4px}
+.r-info .r-route{font-size:12px;color:var(--gold);margin-bottom:6px}
+.r-info .r-caption{font-size:12px;color:var(--text2);line-height:1.55;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:14px}
+.r-stars{color:var(--gold);font-size:11px;letter-spacing:2px;margin-top:8px}
+/* Upload slot */
+.r-card.upload-slot{border-style:dashed;cursor:pointer;transition:all .4s}
+.r-card.upload-slot:hover{border-color:var(--gold);background:rgba(201,162,82,.03)}
+.upload-area{height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-bottom:1px dashed var(--border)}
+.upload-area .u-icon{font-size:40px;color:rgba(201,162,82,.18)}
+.upload-area p{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.upload-area small{font-size:11px;color:var(--text3);text-align:center;line-height:1.5;padding:0 20px}
+.r-upload-info{padding:18px 20px;text-align:center}
+.r-upload-info p{font-size:12px;color:var(--text3)}
+
+
+
+/* ══ INQUIRY ══ */
+#inquiry{padding:96px 0;background:var(--navy)}
+.inq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.inq-left{position:sticky;top:96px}
+.inq-left h2{font-size:clamp(34px,4vw,52px);color:var(--cream);margin:12px 0 20px}
+.inq-left p{color:var(--text2);font-size:15px;line-height:1.8;margin-bottom:28px}
+.inq-promise{display:flex;flex-direction:column;gap:14px}
+.inq-p-item{display:flex;align-items:center;gap:14px;padding:14px 20px;border:1px solid var(--border);background:rgba(201,162,82,.02)}
+.inq-p-item span:first-child{font-size:20px}
+.inq-p-item p{font-size:13px;color:var(--text2);line-height:1.5}
+.inq-p-item p b{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px;font-weight:500}
+.inq-form{background:var(--navy3);border:1px solid var(--border);padding:40px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text);padding:12px 15px;font-family:'Jost',sans-serif;font-size:14px;outline:none;transition:border-color .3s;appearance:none}
+.fg select option{background:var(--navy3)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold)}
+.fg textarea{resize:vertical;min-height:90px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.wa-submit{width:100%;background:var(--wa);border:none;color:#fff;padding:14px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px}
+.wa-submit:hover{background:#1dbc58;transform:translateY(-2px)}
+.f-note{font-size:12px;color:var(--text3);text-align:center;margin-top:10px}
+
+/* ══ TICKET ══ */
+#ticket{padding:96px 0;background:var(--navy2)}
+.tkt-box{max-width:660px;margin:0 auto;background:var(--navy3);border:1px solid var(--border);padding:48px}
+.tkt-hdr{text-align:center;margin-bottom:36px}
+.tkt-hdr h3{font-size:34px;color:var(--cream);margin-bottom:8px}
+.tkt-hdr p{font-size:14px;color:var(--text2)}
+.tkt-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:36px}
+.ts-num{width:30px;height:30px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:10px;color:var(--text3);flex-shrink:0;transition:all .3s}
+.ts-num.a{border-color:var(--gold);color:var(--gold);background:rgba(201,162,82,.08)}
+.ts-num.d{border-color:var(--gold);background:var(--gold);color:var(--navy)}
+.ts-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-left:6px}
+.ts-line{width:50px;height:1px;background:var(--border);margin:0 8px}
+.tkt-fields{display:flex;flex-direction:column;gap:14px}
+.tkt-result{display:none;text-align:center}
+.tkt-result.show{display:block}
+.boarding{background:var(--navy2);border:1px solid var(--gold);padding:28px;margin:20px 0;text-align:left;position:relative;overflow:hidden}
+.boarding::before{content:'BOARDING PASS';position:absolute;top:10px;right:14px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:rgba(201,162,82,.18)}
+.b-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.b-field label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:3px}
+.b-field span{font-size:15px;color:var(--cream)}
+.b-hr{border:none;border-top:1px dashed rgba(201,162,82,.2);margin:16px 0}
+.barcode{display:flex;justify-content:center;gap:2px;margin-top:14px}
+.bar{background:var(--cream);opacity:.55}
+.tkt-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.back-btn{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;text-decoration:underline;margin-top:12px}
+
+/* ══ TESTIMONIALS (text) ══ */
+#testi{padding:96px 0;background:var(--navy)}
+.t-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.t-card{background:var(--navy3);border:1px solid var(--border);padding:32px;transition:all .4s}
+.t-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.t-q{font-family:'Cormorant Garamond',serif;font-size:56px;color:rgba(201,162,82,.1);line-height:.5;margin-bottom:16px}
+.t-text{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--text2);line-height:1.75;font-style:italic;margin-bottom:20px}
+.t-stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:14px}
+.t-auth{display:flex;align-items:center;gap:12px;border-top:1px solid var(--border);padding-top:16px}
+.t-av{width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:12px;color:var(--navy);font-weight:600;flex-shrink:0}
+.t-name{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--cream);font-weight:500}
+.t-trip{font-size:11px;color:var(--gold);margin-top:2px}
+
+/* ══ NEWSLETTER ══ */
+#nl{padding:72px 0;background:var(--gold)}
+.nl-inner{display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap}
+.nl-txt h2{font-size:34px;color:var(--navy);margin-bottom:6px}
+.nl-txt p{color:rgba(5,13,30,.6);font-size:14px}
+.nl-form{display:flex;flex:1;max-width:400px}
+.nl-form input{flex:1;background:rgba(5,13,30,.1);border:1px solid rgba(5,13,30,.2);border-right:none;color:var(--navy);padding:13px 18px;font-family:'Jost',sans-serif;font-size:13px;outline:none}
+.nl-form input::placeholder{color:rgba(5,13,30,.4)}
+.nl-form button{background:var(--navy);color:var(--gold2);border:none;padding:13px 22px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .3s;white-space:nowrap}
+.nl-form button:hover{background:var(--navy2)}
+
+/* ══ FOOTER ══ */
+footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 28px}
+.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:52px}
+.f-brand b{font-family:'Cinzel',serif;font-size:20px;color:var(--gold2);letter-spacing:2px;display:block;margin-bottom:3px}
+.f-brand small{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:18px}
+.f-brand p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px;max-width:260px}
+.f-socials{display:flex;gap:10px}
+.f-soc{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;transition:all .3s;cursor:pointer;text-decoration:none;font-family:'Cinzel',serif}
+.f-soc:hover{border-color:var(--gold);color:var(--gold)}
+.f-col h4{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:18px}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.f-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:7px}
+.f-links a::before{content:'›';color:var(--gold);font-size:14px}
+.f-links a:hover{color:var(--gold2)}
+.f-contact{display:flex;flex-direction:column;gap:12px}
+.f-ci{font-size:13px;color:var(--text2)}
+.f-ci b{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:1px;font-weight:500}
+.f-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.f-bottom p{font-size:11px;color:var(--text3)}
+.f-bottom a{color:var(--gold);text-decoration:none}
+
+/* ══ WA FLOAT ══ */
+.wa-fl{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.wa-tip{background:var(--navy3);border:1px solid rgba(37,211,102,.2);color:var(--text);padding:9px 14px;font-size:12px;white-space:nowrap;opacity:0;transform:translateX(8px);transition:all .3s;pointer-events:none}
+.wa-fl:hover .wa-tip{opacity:1;transform:none}
+.wa-circle{position:relative}
+.wa-pulse{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(37,211,102,.35);animation:pulse 2.2s ease-out infinite;bottom:0;right:0}
+@keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
+.wa-a{width:52px;height:52px;background:var(--wa);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s;box-shadow:0 4px 20px rgba(37,211,102,.28)}
+.wa-a:hover{transform:scale(1.1)}
+.wa-a svg{width:26px;height:26px;fill:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy3);border:1px solid var(--gold);color:var(--cream);padding:12px 26px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;z-index:9999;opacity:0;transition:all .4s;pointer-events:none}
+.toast.s{opacity:1;transform:translateX(-50%)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .n-links,.n-wa{display:none}
+  .ham{display:flex}
+  .why-grid{grid-template-columns:1fr}
+  .why-card{border-right:none;border-bottom:1px solid var(--border)}
+  .why-card:last-child{border-bottom:none}
+  .inq-wrap,.f-grid{grid-template-columns:1fr}
+  .inq-left{position:static}
+  .svc-grid,.r-grid,.deals-grid,.t-wrap{grid-template-columns:1fr}
+  .h-stats{grid-template-columns:1fr;border:1px solid var(--border)}
+  .h-stat{border-right:none;border-bottom:1px solid var(--border)}
+  .h-stat:last-child{border-bottom:none}
+  .fg-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .nl-inner{flex-direction:column;text-align:center}
+  .nl-form{width:100%;max-width:100%}
+  .tkt-box{padding:28px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="n-logo">
+    <b>Sky Nexus Travels</b>
+    <small>Your Personal Flight Expert</small>
+  </a>
+  <ul class="n-links">
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    
+    <li><a href="#ticket">My Ticket</a></li>
+  </ul>
+  <a href="https://wa.me/918847457079?text=Hello!%20I%20need%20help%20with%20a%20flight%20booking." target="_blank" class="n-wa">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <div class="ham" id="ham" onclick="toggleMob()"><span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold)">—</span><span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold)">—</span><span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold)">—</span></div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#why" onclick="toggleMob()">Why Choose Us</a>
+  <a href="#how" onclick="toggleMob()">How It Works</a>
+  <a href="#services" onclick="toggleMob()">Services</a>
+    <a href="#insurance" onclick="toggleMob()">Insurance</a>
+    <a href="#journey" onclick="toggleMob()">Our Promise</a>
+    <a href="#faq" onclick="toggleMob()">FAQ</a>
+  <a href="#reviews" onclick="toggleMob()">Real Reviews</a>
+  
+  <a href="#inquiry" onclick="toggleMob()">Book a Flight</a>
+  <a href="#ticket" onclick="toggleMob()">Download Ticket</a>
+  <a href="https://wa.me/918847457079" target="_blank" style="color:var(--wa)!important">WhatsApp Us</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-bg"></div>
+  <div class="stars-c" id="starsC"></div>
+  <div class="container" style="position:relative;z-index:1;width:100%">
+    <div class="h-content">
+      <div class="h-eyebrow"><span class="label">Est. 2025 · Punjab, India</span></div>
+      <h1 class="h-title">Your Personal<br><em>Flight Expert</em></h1>
+      <p class="h-sub">Domestic & international flights — best price, best seats, and someone who stays with you from the first inquiry to the second you land.</p>
+      <div class="h-promise fi">
+        <span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold)">—</span>
+        <span>Best Fare. Every Time. No Compromises.</span>
+        <span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold)">—</span>
+      </div>
+      <div class="h-btns">
+        <a href="https://wa.me/918847457079?text=Hi!%20I%20need%20help%20booking%20a%20flight." target="_blank" class="btn btn-fill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Book on WhatsApp
+        </a>
+        <a href="#how" class="btn">See How It Works →</a>
+      </div>
+      <div class="h-stats fi d2">
+        <div class="h-stat">
+          <div class="h-stat-n">100+</div>
+          <div class="h-stat-l">Flights Booked</div>
+        </div>
+        <div class="h-stat">
+          <div class="h-stat-n">100%</div>
+          <div class="h-stat-l">Personal Attention</div>
+        </div>
+        <div class="h-stat">
+          <div class="h-stat-n">24/7</div>
+          <div class="h-stat-l">Always Reachable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="h-scroll" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span><div class="h-scroll-line"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-t">
+    <div class="ticker-i"><span class="tdot"></span>Punjab → Dubai · Best Fare Alert</div>
+    <div class="ticker-i"><span class="tdot"></span>Mumbai → London · Business Class Deals</div>
+    <div class="ticker-i"><span class="tdot"></span>Punjab → Goa · Weekend Flash Sale</div>
+    <div class="ticker-i"><span class="tdot"></span>Hyderabad → Bangkok · Group Rates Available</div>
+    <div class="ticker-i"><span class="tdot"></span>All Airlines Compared · Zero Extra Fees</div>
+    <div class="ticker-i"><span class="tdot"></span>Punjab → Dubai · Best Fare Alert</div>
+    <div class="ticker-i"><span class="tdot"></span>Mumbai → London · Business Class Deals</div>
+    <div class="ticker-i"><span class="tdot"></span>Punjab → Goa · Weekend Flash Sale</div>
+    <div class="ticker-i"><span class="tdot"></span>Hyderabad → Bangkok · Group Rates Available</div>
+    <div class="ticker-i"><span class="tdot"></span>All Airlines Compared · Zero Extra Fees</div>
+  </div>
+</div>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">The Sky Nexus Difference</span>
+      <div class="divider"></div>
+      <h2>Why Travellers Choose Us</h2>
+      <p>Not a big agency. Not a bot. Just one dedicated person who genuinely cares about your travel.</p>
+    </div>
+    <div class="why-grid fi d1">
+      <div class="why-card">
+        <span class="why-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,14 14,26 2,14" stroke="var(--gold)" stroke-width="0.8" fill="rgba(201,162,82,0.06)"/><polygon points="14,8 20,14 14,20 8,14" stroke="var(--gold)" stroke-width="0.5" fill="none"/></svg></span>
+        <h3>Best Price, Always</h3>
+        <p>We compare across every airline and booking platform — IndiGo, Air India, Emirates, and more — to find you the lowest fare with the best baggage, meals, and timing combination.</p>
+        <span class="why-tag">✦ Price Guarantee</span>
+      </div>
+      <div class="why-card">
+        <span class="why-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,14 14,26 2,14" stroke="var(--gold)" stroke-width="0.8" fill="rgba(201,162,82,0.06)"/><polygon points="14,8 20,14 14,20 8,14" stroke="var(--gold)" stroke-width="0.5" fill="none"/></svg></span>
+        <h3>With You Every Step</h3>
+        <p>From the moment you message us to the second you touch down — we are reachable. Flight delays, gate changes, rescheduling, re-routing — we handle it all, in real time.</p>
+        <span class="why-tag">✦ End-to-End Support</span>
+      </div>
+      <div class="why-card">
+        <span class="why-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,14 14,26 2,14" stroke="var(--gold)" stroke-width="0.8" fill="rgba(201,162,82,0.06)"/><polygon points="14,8 20,14 14,20 8,14" stroke="var(--gold)" stroke-width="0.5" fill="none"/></svg></span>
+        <h3>Personal, Not Automated</h3>
+        <p>You speak to one real person — not a call centre, not a chatbot. She knows your preferences, your travel history, and your family. That personal touch makes all the difference.</p>
+        <span class="why-tag">✦ Direct Relationship</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">The Process</span>
+      <div class="divider"></div>
+      <h2>How It Works</h2>
+      <p>Simple, personal, and stress-free — from your first message to landing at your destination</p>
+    </div>
+    <div class="how-steps fi">
+      <div class="how-line"></div>
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>You Share Your Requirements</h3>
+          <p>Just message on WhatsApp — tell us where you want to go, your dates, number of passengers, and any preferences like window seat, extra baggage, or direct flight. No forms, no complications.</p>
+          <span class="step-tag">WhatsApp · DM · Call</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>We Search Every Option For You</h3>
+          <p>We compare fares across all airlines, check multiple travel dates if flexible, and look for seat upgrades or meal add-ons that fit your needs — all to give you the best value, not just the cheapest price.</p>
+          <span class="step-tag">All Airlines · All Platforms</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>We Share the Best Options With You</h3>
+          <p>You receive a clear comparison of 2–3 best options with prices, timings, layovers, and our personal recommendation. No pressure — you decide.</p>
+          <span class="step-tag">Transparent · No Hidden Fees</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h3>Booking & Confirmation</h3>
+          <p>Once you confirm, we handle the entire booking. Your e-ticket and booking confirmation are sent directly to you. We also handle visa queries, travel insurance, and hotel arrangements on request.</p>
+          <span class="step-tag">Tickets Delivered Instantly</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h3>Support Until You Land</h3>
+          <p>This is the part that sets us apart. We stay with you through check-in reminders, flight status updates, and are a message away if anything changes — until you have safely reached your destination.</p>
+          <span class="step-tag">✦ Our Signature Promise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">What We Do</span>
+      <div class="divider"></div>
+      <h2>Our Services</h2>
+      <p>Everything around your travel — with one trusted person handling it all</p>
+    </div>
+    <div class="svc-grid fi">
+      <div class="svc-card svc-highlight d1">
+        <div class="svc-icon-box"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="20" height="20" stroke="var(--gold)" stroke-width="0.8" fill="none"/><line x1="6" y1="11" x2="16" y2="11" stroke="var(--gold)" stroke-width="0.8"/><line x1="11" y1="6" x2="11" y2="16" stroke="var(--gold)" stroke-width="0.8"/></svg></div>
+        <div>
+          <h3>International Flights</h3>
+          <p>Dubai, London, Bangkok, Singapore, Europe, USA, and beyond — we find the best fare across all international carriers with seat selection and meal preferences sorted.</p>
+          <div class="svc-tags">
+            <span class="tag">Emirates</span><span class="tag">Air India</span><span class="tag">IndiGo</span><span class="tag">SpiceJet</span><span class="tag">Vistara</span><span class="tag">+All Airlines</span>
+          </div>
+        </div>
+      </div>
+      <div class="svc-card svc-highlight d2">
+        <div class="svc-icon-box"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="20" height="20" stroke="var(--gold)" stroke-width="0.8" fill="none"/><line x1="6" y1="11" x2="16" y2="11" stroke="var(--gold)" stroke-width="0.8"/><line x1="11" y1="6" x2="11" y2="16" stroke="var(--gold)" stroke-width="0.8"/></svg></div>
+        <div>
+          <h3>Domestic Flights</h3>
+          <p>Punjab to Goa, Mumbai, Chennai, Kolkata, Hyderabad, and everywhere in between. We handle group bookings, last-minute changes, and multi-city itineraries with ease.</p>
+          <div class="svc-tags">
+            <span class="tag">Punjab Hub</span><span class="tag">Group Bookings</span><span class="tag">Multi-City</span><span class="tag">Last Minute</span>
+          </div>
+        </div>
+      </div>
+      <div class="svc-card d1">
+        <div class="svc-icon-box"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="20" height="20" stroke="var(--gold)" stroke-width="0.8" fill="none"/><line x1="6" y1="11" x2="16" y2="11" stroke="var(--gold)" stroke-width="0.8"/><line x1="11" y1="6" x2="11" y2="16" stroke="var(--gold)" stroke-width="0.8"/></svg></div>
+        <div>
+          <h3>Visa Assistance</h3>
+          <p>Guidance on visa requirements, document checklists, and application processes for popular destinations. We simplify what can feel overwhelming.</p>
+          <div class="svc-tags">
+            <span class="tag">UAE</span><span class="tag">Schengen</span><span class="tag">Thailand</span><span class="tag">UK</span><span class="tag">USA</span>
+          </div>
+        </div>
+      </div>
+      <div class="svc-card d2">
+        <div class="svc-icon-box"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="20" height="20" stroke="var(--gold)" stroke-width="0.8" fill="none"/><line x1="6" y1="11" x2="16" y2="11" stroke="var(--gold)" stroke-width="0.8"/><line x1="11" y1="6" x2="11" y2="16" stroke="var(--gold)" stroke-width="0.8"/></svg></div>
+        <div>
+          <h3>Hotels & Packages</h3>
+          <p>Need a hotel to go with your flight? We arrange that too. Custom holiday packages — honeymoon, family, solo — are available on request, curated personally for you.</p>
+          <div class="svc-tags">
+            <span class="tag">On Request</span><span class="tag">Honeymoon</span><span class="tag">Family</span><span class="tag">Corporate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS PLACEHOLDER -->
+<section id="reviews" style="padding:96px 0;background:var(--navy)">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">Client Reviews</span>
+      <div class="divider"></div>
+      <h2>Verified Customer Reviews</h2>
+      <p>Authentic reviews from our clients are being compiled. We believe only real voices should speak here.</p>
+    </div>
+    <div style="max-width:720px;margin:0 auto;border:1px solid var(--border);padding:56px 48px;text-align:center;background:var(--navy3)" class="fi">
+      <div style="width:1px;height:48px;background:linear-gradient(180deg,transparent,var(--gold),transparent);margin:0 auto 32px"></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);line-height:1.7;font-style:italic;margin-bottom:28px">
+        "We are collecting genuine screenshots and testimonials from our clients.<br>Original reviews will be published here shortly."
+      </p>
+      <span class="label">— Sky Nexus Travels</span>
+      <div style="width:1px;height:48px;background:linear-gradient(180deg,var(--gold),transparent);margin:32px auto 0"></div>
+    </div>
+    <div style="text-align:center;margin-top:40px" class="fi">
+      <p style="color:var(--text2);font-size:14px;margin-bottom:20px">Travelled with us? We would love to hear from you.</p>
+      <a href="https://wa.me/918847457079?text=I%20would%20like%20to%20share%20my%20experience%20with%20Sky%20Nexus!" target="_blank" class="btn">Share Your Experience</a>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey" style="padding:96px 0;background:var(--navy2)">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">Your Peace of Mind</span>
+      <div class="divider"></div>
+      <h2>We Are With You — Every Step</h2>
+      <p>From the moment you think about flying to the moment you land, we are reachable, watchful, and working for you.</p>
+    </div>
+
+    <div style="max-width:860px;margin:0 auto;position:relative" class="journey-wrap">
+
+      <!-- vertical line -->
+      <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--border) 10%,var(--border) 90%,transparent);transform:translateX(-50%)" class="journey-line"></div>
+
+      <!-- Item 1 -->
+      <div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center;margin-bottom:56px" class="fi j-row">
+        <div style="text-align:right;padding-right:40px">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">BEFORE YOU DECIDE</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);font-weight:600;margin-bottom:10px">Confused Which Flight to Choose?</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.8">Too many options, confusing layovers, price differences that make no sense? We break it down — which airline is more reliable on that route, which connection is too tight, which fare class gives you flexibility. You decide with full clarity, not guesswork.</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;z-index:1">
+          <div style="width:14px;height:14px;border:1px solid var(--gold);background:var(--navy2);transform:rotate(45deg)"></div>
+        </div>
+        <div style="padding-left:40px">
+          <div style="border:1px solid var(--border);padding:18px 22px;background:var(--navy3);font-size:13px;color:var(--text2);line-height:1.8;font-style:italic">"Which is better — IndiGo 6E-202 with a 1hr layover or Air India direct at ₹2,000 more?" — We answer this in minutes, for free.</div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center;margin-bottom:56px" class="fi d1 j-row">
+        <div style="text-align:right;padding-right:40px;order:3">
+          <div style="border:1px solid var(--border);padding:18px 22px;background:var(--navy3);font-size:13px;color:var(--text2);line-height:1.8;font-style:italic">"Your booking is confirmed. Here is your PNR, e-ticket, and baggage allowance — saved to your WhatsApp for easy access at the airport."</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;z-index:1;order:2">
+          <div style="width:14px;height:14px;border:1px solid var(--gold);background:var(--navy2);transform:rotate(45deg)"></div>
+        </div>
+        <div style="padding-left:40px;order:1;text-align:right">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">AFTER BOOKING</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);font-weight:600;margin-bottom:10px">Your Ticket, Documents & Details — Organised</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.8">Once booked, we send you everything in one message — e-ticket, PNR, check-in window, baggage allowance, and any important notes about your flight. No digging through emails.</p>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center;margin-bottom:56px" class="fi d1 j-row">
+        <div style="text-align:right;padding-right:40px">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">THE NIGHT BEFORE</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);font-weight:600;margin-bottom:10px">Check-In Reminder & Flight Status</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.8">We remind you when your web check-in opens — so you get a good seat without paying extra. If there is any schedule change or delay flagged by the airline, we let you know before you leave home.</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;z-index:1">
+          <div style="width:14px;height:14px;border:1px solid var(--gold);background:var(--navy2);transform:rotate(45deg)"></div>
+        </div>
+        <div style="padding-left:40px">
+          <div style="border:1px solid var(--border);padding:18px 22px;background:var(--navy3);font-size:13px;color:var(--text2);line-height:1.8;font-style:italic">"Your check-in is open. Web check-in link sent. Your flight departs at 07:15 — terminal 2, gate B12. We are with you. Call anytime."</div>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center;margin-bottom:56px" class="fi d2 j-row">
+        <div style="text-align:right;padding-right:40px;order:3">
+          <div style="border:1px solid var(--border);padding:18px 22px;background:var(--navy3);font-size:13px;color:var(--text2);line-height:1.8;font-style:italic">"Alert: Gate changed from B12 to C04. You have 35 minutes. No rush — proceed to C gates via the central corridor."</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;z-index:1;order:2">
+          <div style="width:14px;height:14px;border:1px solid var(--gold);background:var(--navy2);transform:rotate(45deg)"></div>
+        </div>
+        <div style="padding-left:40px;order:1;text-align:right">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">AT THE AIRPORT</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);font-weight:600;margin-bottom:10px">Gate Change? Delay? We Tell You First.</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.8">Boarding gate changed. Flight delayed. Terminal shifted. You should not be finding this out from the airport screen while rushing. We monitor and message you — so you are always a step ahead.</p>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center" class="fi d2 j-row">
+        <div style="text-align:right;padding-right:40px">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">IF SOMETHING GOES WRONG</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);font-weight:600;margin-bottom:10px">Flight Cancelled or Missed? We Handle It.</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.8">Flight cancelled at 11pm. Connecting flight missed. Stuck at the airport. Message us — we find alternatives, check your options, and act fast. You are never alone in the middle of a disruption.</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;z-index:1">
+          <div style="width:14px;height:14px;border:1px solid var(--gold);background:var(--navy2);transform:rotate(45deg)"></div>
+        </div>
+        <div style="padding-left:40px">
+          <div style="border:1px solid var(--border);padding:18px 22px;background:var(--navy3);font-size:13px;color:var(--text2);line-height:1.8;font-style:italic">"Your flight has been cancelled. I have found two alternatives — one tonight at 23:40 and one tomorrow morning. Let me know which you prefer and I will rebook now."</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:64px" class="fi d2">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);font-style:italic;margin-bottom:24px">This is not a booking platform. This is a person who is with you.</p>
+      <a href="https://wa.me/918847457079?text=Hi!%20I%20want%20to%20book%20a%20flight%20with%20Sky%20Nexus." target="_blank" class="btn btn-fill">Book With a Human →</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+@media(max-width:700px){
+  .journey-line{display:none!important}
+  .j-row{grid-template-columns:1fr!important;gap:16px!important}
+  .j-row > div{text-align:left!important;padding:0!important;order:unset!important}
+  .j-row > div:nth-child(2){display:none}
+}
+</style>
+
+<!-- INSURANCE -->
+<section id="insurance" style="padding:96px 0;background:var(--navy)">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">Travel Protection</span>
+      <div class="divider"></div>
+      <h2>Travel Insurance</h2>
+      <p>Fly with confidence. We help arrange travel insurance so the unexpected never becomes a crisis.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start" class="ins-grid">
+
+      <div class="fi">
+        <p style="color:var(--text2);font-size:15px;line-height:1.9;margin-bottom:32px">Whether you are flying domestically or internationally, travel insurance gives you and your family a safety net. We assist in getting you covered — simply message us alongside your flight booking and we handle the rest.</p>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:36px">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border:1px solid var(--border);background:var(--navy3)">
+            <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-top:2px;flex-shrink:0">01</div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--cream);margin-bottom:6px">Flight Cancellation Cover</div>
+              <div style="font-size:13px;color:var(--text2);line-height:1.7">Get reimbursed if your flight is cancelled, delayed, or you need to cancel due to illness, emergencies, or unforeseen events.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border:1px solid var(--border);background:var(--navy3)">
+            <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-top:2px;flex-shrink:0">02</div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--cream);margin-bottom:6px">Medical & Emergency Cover</div>
+              <div style="font-size:13px;color:var(--text2);line-height:1.7">Covers hospitalisation, medical treatment, and emergency evacuation abroad — particularly important for international travel.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border:1px solid var(--border);background:var(--navy3)">
+            <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-top:2px;flex-shrink:0">03</div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--cream);margin-bottom:6px">Baggage Loss & Delay</div>
+              <div style="font-size:13px;color:var(--text2);line-height:1.7">Compensation if your checked baggage is lost, stolen, or delayed beyond a set number of hours at your destination.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border:1px solid var(--border);background:var(--navy3)">
+            <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-top:2px;flex-shrink:0">04</div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--cream);margin-bottom:6px">Passport & Document Loss</div>
+              <div style="font-size:13px;color:var(--text2);line-height:1.7">Emergency assistance if your passport or travel documents are lost or stolen while travelling internationally.</div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://wa.me/918847457079?text=Hi!%20I%20want%20to%20know%20about%20travel%20insurance%20for%20my%20trip." target="_blank" class="btn btn-fill" style="display:inline-flex;gap:8px;align-items:center">
+          Ask About Insurance →
+        </a>
+      </div>
+
+      <div class="fi d1" style="border:1px solid var(--border);padding:48px 40px;background:var(--navy3)">
+        <div style="width:1px;height:40px;background:linear-gradient(180deg,transparent,var(--gold));margin:0 0 32px"></div>
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:16px">WHY IT MATTERS</div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);line-height:1.7;font-style:italic;margin-bottom:32px">"A missed flight or a hospital visit abroad can cost ten times more than a policy. Insurance is not an expense — it is the cost of travelling without worry."</p>
+        <div style="width:1px;height:40px;background:linear-gradient(180deg,var(--gold),transparent);margin:0 0 36px"></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:13px;color:var(--text2)">Coverage for</span>
+            <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--cream)">Individual & Family</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:13px;color:var(--text2)">Trip types</span>
+            <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--cream)">Domestic & International</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:13px;color:var(--text2)">How to get covered</span>
+            <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--cream)">Message Us on WhatsApp</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:14px 0">
+            <span style="font-size:13px;color:var(--text2)">Charges</span>
+            <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--gold)">No Hidden Fees</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+@media(max-width:768px){.ins-grid{grid-template-columns:1fr!important}}
+</style>
+
+<!-- TICKET PORTAL -->
+<section id="ticket" style="padding:96px 0;background:var(--navy2)">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">Your Bookings</span>
+      <div class="divider"></div>
+      <h2>Get Your Ticket</h2>
+      <p>Once your booking is confirmed, we send your e-ticket directly on WhatsApp — instantly, personally.</p>
+    </div>
+    <div style="max-width:800px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="tkt-wa-grid">
+
+        <div style="border:1px solid var(--border);padding:40px 36px;background:var(--navy3)" class="fi">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:20px">Step 01</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);font-weight:600;margin-bottom:12px">Book With Us</h3>
+          <p style="color:var(--text2);font-size:14px;line-height:1.8;margin-bottom:28px">Message us on WhatsApp with your travel details — route, dates, number of passengers. We find you the best fare and confirm your booking.</p>
+          <a href="https://wa.me/918847457079?text=Hi!%20I%20want%20to%20book%20a%20flight." target="_blank" class="btn btn-fill" style="display:inline-flex;gap:8px;align-items:center">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Start Booking
+          </a>
+        </div>
+
+        <div style="border:1px solid var(--border);padding:40px 36px;background:var(--navy3)" class="fi d1">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:20px">Step 02</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);font-weight:600;margin-bottom:12px">Receive Your Ticket</h3>
+          <p style="color:var(--text2);font-size:14px;line-height:1.8;margin-bottom:28px">After payment confirmation, your official e-ticket is sent directly to your WhatsApp number — no portals, no waiting, no confusion. Need a copy anytime? Just ask us.</p>
+          <a href="https://wa.me/918847457079?text=Hi!%20I%20have%20already%20booked%20and%20need%20my%20ticket." target="_blank" class="btn" style="display:inline-flex;gap:8px;align-items:center">
+            Already Booked? Get Ticket →
+          </a>
+        </div>
+
+      </div>
+
+      <div style="margin-top:24px;border:1px solid rgba(201,162,82,.15);padding:24px 36px;background:rgba(201,162,82,.03);display:flex;align-items:center;gap:20px" class="fi d2">
+        <div style="width:1px;height:48px;background:linear-gradient(180deg,transparent,var(--gold),transparent);flex-shrink:0"></div>
+        <p style="color:var(--text2);font-size:13px;line-height:1.8;margin:0">
+          <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);display:block;margin-bottom:4px">OUR PROMISE</span>
+          Every ticket we send is the official airline-issued document. We do not alter, forward, or reissue without your explicit knowledge. Your travel documents are yours — always.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@media(max-width:640px){.tkt-wa-grid{grid-template-columns:1fr!important}}
+</style>
+
+<!-- FAQ -->
+<section id="faq" style="padding:96px 0;background:var(--navy)">
+  <div class="container">
+    <div class="s-head fi">
+      <span class="label">Common Questions</span>
+      <div class="divider"></div>
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know before booking — answered plainly.</p>
+    </div>
+
+    <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:2px" id="faqList">
+
+      <div class="faq-item fi">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Do you charge extra fees for booking flights?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Our service fee is minimal and always disclosed upfront before you confirm. What we quote is the total — no surprises at checkout, no hidden convenience charges added later. For most domestic bookings the fare we find is equal to or better than what you'd find on your own.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d1">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How do I pay for the ticket?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Payment is simple — UPI or bank transfer. We share payment details once the fare and booking are confirmed on WhatsApp. The ticket is issued in your name directly by the airline.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d1">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How quickly will I receive my ticket after payment?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Instantly, in most cases. Once payment is confirmed, your e-ticket is issued by the airline and we send it directly to your WhatsApp — usually within minutes. For international bookings with documentation requirements it may take slightly longer, but we keep you informed throughout.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d2">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I cancel or change my ticket after booking?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Yes — cancellations and date changes are handled by us on your behalf. The charges depend on the airline's fare rules (which we explain before you book). We always recommend booking a refundable or flexible fare if your travel plans are not fixed. Just message us and we take care of the process.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d2">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Do you book international flights too?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Absolutely. International flights are our strength — Dubai, London, Canada, Australia, Thailand, USA, Schengen countries and more. We also advise on visa requirements, baggage policies, transit rules, and connecting flight timings so you are fully prepared before you travel.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d2">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What documents do I need for a visa application?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>It depends on the destination country. Common requirements include a valid passport (with 6 months validity), confirmed flight booking, hotel reservation, bank statements, and photographs. We provide a tailored document checklist for your specific visa when you enquire — so you do not miss anything.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d3">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How does travel insurance work and do I need it?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Travel insurance covers unexpected situations — flight cancellation, medical emergencies abroad, lost baggage, and more. For international travel especially, we strongly recommend it. The cost is usually a small fraction of your ticket price, and it can save you enormously if something goes wrong. We arrange this alongside your booking — just ask.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d3">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What happens if my flight is cancelled or delayed?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Message us immediately. We check alternative flights, your entitlements from the airline (refund, rebook, compensation), and help you decide the fastest path forward. If we are aware of a cancellation before you are, we will contact you first — this is part of how we work.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d3">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can you book for a group or family?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Yes — group bookings are something we handle regularly, whether it is a family holiday, a wedding party, or a corporate trip. We ensure everyone is seated together where possible, and manage all tickets under one conversation so nothing falls through the gaps.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fi d3">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What are your working hours?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Once you have booked with us, we are available 24 hours a day, 7 days a week — no exceptions. If your flight is at 3am, we are reachable. If something goes wrong at midnight, call or message us. Pre-booking enquiries are handled from 8 AM to 10 PM daily, but once you are our client, there are no off-hours.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:56px" class="fi d2">
+      <p style="color:var(--text2);font-size:14px;margin-bottom:20px">Still have a question? Ask us directly.</p>
+      <a href="https://wa.me/918847457079?text=Hi!%20I%20have%20a%20question%20about%20booking." target="_blank" class="btn">Ask on WhatsApp →</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.faq-item{border:1px solid var(--border);background:var(--navy3);overflow:hidden;transition:border-color .3s}
+.faq-item:hover{border-color:rgba(201,162,82,.3)}
+.faq-q{width:100%;background:none;border:none;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;gap:20px}
+.faq-q span:first-child{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.5px;color:var(--cream);line-height:1.6;font-weight:500}
+.faq-icon{font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .3s;font-weight:300;line-height:1}
+.faq-a{display:none;padding:0 28px 22px;border-top:1px solid var(--border)}
+.faq-a p{font-size:13px;color:var(--text2);line-height:1.9;padding-top:18px;margin:0}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--gold2)}
+.faq-item.open{border-color:rgba(201,162,82,.4)}
+</style>
+
+<!-- NEWSLETTER -->
+<section id="nl">
+  <div class="container">
+    <div class="nl-inner">
+      <div class="nl-txt">
+        <h2>Get Fare Alerts First</h2>
+        <p>Subscribe and we'll notify you when great fares drop on your favourite routes</p>
+      </div>
+      <div class="nl-form">
+        <input type="email" id="nlE" placeholder="Your email address"/>
+        <button onclick="subNL()">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand">
+          <b>Sky Nexus Travels</b>
+          <small>Your Personal Flight Expert · Est. 2025</small>
+          <p>A personal flight booking service built on trust, transparency, and the simple belief that you deserve someone in your corner from the moment you decide to fly.</p>
+        </div>
+        <div class="f-socials">
+          <a href="#" class="f-soc">in</a>
+          <a href="#" class="f-soc">fb</a>
+          <a href="#" class="f-soc">ig</a>
+        </div>
+      </div>
+      <div class="f-col">
+        <h4>Quick Links</h4>
+        <ul class="f-links">
+          <li><a href="#why">Why Choose Us</a></li>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#services">Our Services</a></li>
+          <li><a href="#insurance">Insurance</a></li>
+          <li><a href="#journey">Our Promise</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#reviews">Real Reviews</a></li>
+          
+          <li><a href="#journey">We're With You</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#ticket">Get Your Ticket</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>We Book</h4>
+        <ul class="f-links">
+          <li><a href="#services">International Flights</a></li>
+          <li><a href="#services">Domestic Flights</a></li>
+          <li><a href="#services">Visa Assistance</a></li>
+          <li><a href="#services">Hotels</a></li>
+          <li><a href="#services">Holiday Packages</a></li>
+          <li><a href="#insurance">Travel Insurance</a></li>
+          <li><a href="#services">Corporate Travel</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Reach Us</h4>
+        <div class="f-contact">
+          <div class="f-ci"><b>WhatsApp</b>+91 88474 57079</div>
+          <div class="f-ci"><b>Email</b>reservations.skynexustravels@gmail.com</div>
+          <div class="f-ci"><b>Location</b>Punjab, India</div>
+          <div class="f-ci"><b>Enquiries</b>8 AM – 10 PM Daily</div>
+          <div class="f-ci"><b>After Booking</b>24 / 7 · Always</div>
+        </div>
+        <div style="margin-top:20px">
+          <a href="https://wa.me/918847457079?text=Hello!%20I%20need%20help%20with%20a%20flight." target="_blank" class="btn" style="padding:11px 20px;font-size:10px;display:inline-flex;gap:8px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat Now
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <p>© 2025 Sky Nexus Travels. All rights reserved.</p>
+      <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a> · <a href="#">Refund Policy</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<div class="wa-fl">
+  <div class="wa-tip">Book a Flight on WhatsApp</div>
+  <div class="wa-circle">
+    <div class="wa-pulse"></div>
+    <a href="https://wa.me/918847457079?text=Hello%20Sky%20Nexus!%20I%20need%20help%20booking%20a%20flight." target="_blank" class="wa-a">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// NAV scroll
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>60));
+
+// Mobile menu
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
+
+// Stars
+(()=>{const c=document.getElementById('starsC');for(let i=0;i<70;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()<.3?2:1}px;height:${Math.random()<.3?2:1}px;opacity:${.1+Math.random()*.5};animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s`;c.appendChild(s)}})();
+
+// Fade in
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08});
+document.querySelectorAll('.fi').forEach(el=>io.observe(el));
+
+
+
+
+// FAQ accordion
+function toggleFaq(btn){
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// Form submit
+function submitForm(){
+  const nm=document.getElementById('fName')?.value||'';
+  const ph=document.getElementById('fPhone')?.value||'';
+  const from=document.getElementById('fFrom')?.value||'';
+  const to=document.getElementById('fTo')?.value||'';
+  const dt=document.getElementById('fDate')?.value||'';
+  if(!nm||!ph){showToast('Please fill your name and phone');return;}
+  const msg=`Hi Sky Nexus! I'd like to book a flight.%0AName: ${encodeURIComponent(nm)}%0APhone: ${encodeURIComponent(ph)}%0AFrom: ${encodeURIComponent(from)}%0ATo: ${encodeURIComponent(to)}%0ADate: ${encodeURIComponent(dt)}`;
+  window.open(`https://wa.me/918847457079?text=${msg}`,'_blank');
+  showToast('Redirecting to WhatsApp...');
+}
+
+// Newsletter
+function subNL(){
+  const v=document.getElementById('nlE').value;
+  if(!v||!v.includes('@')){showToast('Please enter a valid email');return}
+  showToast('  Subscribed! Fare alerts coming your way.');
+  document.getElementById('nlE').value='';
+}
+
+// Toast
+function showToast(msg){
+  const t=document.getElementById('toastEl');
+  t.textContent=msg;t.classList.add('s');
+  setTimeout(()=>t.classList.remove('s'),3200);
+}
+
+// Input focus
+document.querySelectorAll('input,select,textarea').forEach(el=>{
+  el.addEventListener('focus',()=>el.style.borderColor='var(--gold)');
+  el.addEventListener('blur',()=>el.style.borderColor='var(--border)');
+});
+</script>
+</body>
+</html>
