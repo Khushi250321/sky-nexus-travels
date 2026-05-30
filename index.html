@@ -498,7 +498,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
           <h3>International Flights</h3>
           <p>Dubai, London, Bangkok, Singapore, Europe, USA, and beyond — we find the best fare across all international carriers with seat selection and meal preferences sorted.</p>
           <div class="svc-tags">
-            <span class="tag">Emirates</span><span class="tag">Air India</span><span class="tag">IndiGo</span><span class="tag">SpiceJet</span><span class="tag">Vistara</span><span class="tag">+All Airlines</span>
+            <span class="tag">Emirates</span><span class="tag">Air Arabia</span><span class="tag">Air India</span><span class="tag">Qatar Airways</span><span class="tag">Flydubai</span><span class="tag">+All Airlines</span>
           </div>
         </div>
       </div>
@@ -508,7 +508,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
           <h3>Domestic Flights</h3>
           <p>Punjab to Goa, Mumbai, Chennai, Kolkata, Hyderabad, and everywhere in between. We handle group bookings, last-minute changes, and multi-city itineraries with ease.</p>
           <div class="svc-tags">
-            <span class="tag">Punjab Hub</span><span class="tag">Group Bookings</span><span class="tag">Multi-City</span><span class="tag">Last Minute</span>
+            <span class="tag">IndiGo</span><span class="tag">Air India</span><span class="tag">SpiceJet</span><span class="tag">Akasa Air</span><span class="tag">Group Bookings</span><span class="tag">Multi-City</span>
           </div>
         </div>
       </div>
@@ -536,29 +536,160 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
   </div>
 </section>
 
-<!-- REVIEWS PLACEHOLDER -->
+<!-- REVIEWS -->
 <section id="reviews" style="padding:96px 0;background:var(--navy)">
   <div class="container">
     <div class="s-head fi">
       <span class="label">Client Reviews</span>
       <div class="divider"></div>
-      <h2>Verified Customer Reviews</h2>
-      <p>Authentic reviews from our clients are being compiled. We believe only real voices should speak here.</p>
+      <h2>What Our Clients Say</h2>
+      <p>Real experiences from real travellers — submitted directly, visible to all.</p>
     </div>
-    <div style="max-width:720px;margin:0 auto;border:1px solid var(--border);padding:56px 48px;text-align:center;background:var(--navy3)" class="fi">
-      <div style="width:1px;height:48px;background:linear-gradient(180deg,transparent,var(--gold),transparent);margin:0 auto 32px"></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);line-height:1.7;font-style:italic;margin-bottom:28px">
-        "We are collecting genuine screenshots and testimonials from our clients.<br>Original reviews will be published here shortly."
-      </p>
-      <span class="label">— Sky Nexus Travels</span>
-      <div style="width:1px;height:48px;background:linear-gradient(180deg,var(--gold),transparent);margin:32px auto 0"></div>
+
+    <!-- REVIEW FORM -->
+    <div style="max-width:680px;margin:0 auto 64px;border:1px solid var(--border);padding:48px 44px;background:var(--navy3)" class="fi" id="reviewFormWrap">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:20px">SHARE YOUR EXPERIENCE</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px" class="rv-fg-row">
+        <div>
+          <label style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:8px">Your Name <span style="color:var(--gold)">*</span></label>
+          <input id="rvName" type="text" placeholder="e.g. Priya S." style="width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text);padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .3s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
+        </div>
+        <div>
+          <label style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:8px">Where Did You Fly?</label>
+          <input id="rvRoute" type="text" placeholder="e.g. Punjab → Dubai" style="width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text);padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .3s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:8px">Your Rating <span style="color:var(--gold)">*</span></label>
+        <div id="starRating" style="display:flex;gap:8px">
+          <span class="rv-star" data-v="1" onclick="setRating(1)" style="font-size:24px;cursor:pointer;color:var(--border);transition:color .2s">★</span>
+          <span class="rv-star" data-v="2" onclick="setRating(2)" style="font-size:24px;cursor:pointer;color:var(--border);transition:color .2s">★</span>
+          <span class="rv-star" data-v="3" onclick="setRating(3)" style="font-size:24px;cursor:pointer;color:var(--border);transition:color .2s">★</span>
+          <span class="rv-star" data-v="4" onclick="setRating(4)" style="font-size:24px;cursor:pointer;color:var(--border);transition:color .2s">★</span>
+          <span class="rv-star" data-v="5" onclick="setRating(5)" style="font-size:24px;cursor:pointer;color:var(--border);transition:color .2s">★</span>
+        </div>
+      </div>
+      <div style="margin-bottom:24px">
+        <label style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:8px">Your Review <span style="color:var(--gold)">*</span></label>
+        <textarea id="rvText" rows="4" placeholder="Tell others about your experience with Sky Nexus Travels..." style="width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text);padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;min-height:110px;transition:border-color .3s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+      <button onclick="submitReview()" class="btn btn-fill" style="width:100%;justify-content:center;padding:14px 0" id="rvSubmitBtn">Submit Review →</button>
+      <p id="rvMsg" style="margin-top:14px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;text-align:center;display:none"></p>
     </div>
-    <div style="text-align:center;margin-top:40px" class="fi">
-      <p style="color:var(--text2);font-size:14px;margin-bottom:20px">Travelled with us? We would love to hear from you.</p>
-      <a href="https://wa.me/918847457079?text=I%20would%20like%20to%20share%20my%20experience%20with%20Sky%20Nexus!" target="_blank" class="btn">Share Your Experience</a>
+
+    <!-- REVIEWS DISPLAY -->
+    <div id="reviewsList" style="max-width:960px;margin:0 auto">
+      <div id="rvLoading" style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px">Loading reviews...</div>
     </div>
+
   </div>
 </section>
+
+<style>
+@media(max-width:600px){.rv-fg-row{grid-template-columns:1fr!important}}
+.rv-card{border:1px solid var(--border);padding:32px 36px;background:var(--navy3);transition:border-color .3s}
+.rv-card:hover{border-color:rgba(201,162,82,.3)}
+.rv-stars{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:12px}
+.rv-text{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:16px;font-style:italic}
+.rv-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.rv-author{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase}
+.rv-route{font-size:12px;color:var(--gold);opacity:.7}
+.rv-date{font-size:11px;color:var(--text3)}
+</style>
+
+<script>
+// ── REVIEWS SYSTEM ──
+const STORAGE_KEY = 'snx_reviews_v1';
+let currentRating = 0;
+
+function setRating(n){
+  currentRating = n;
+  document.querySelectorAll('.rv-star').forEach(s => {
+    s.style.color = parseInt(s.dataset.v) <= n ? 'var(--gold)' : 'var(--border)';
+  });
+}
+
+function getReviews(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e){ return []; }
+}
+
+function saveReviews(arr){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+function renderReviews(){
+  const list = document.getElementById('reviewsList');
+  const loader = document.getElementById('rvLoading');
+  const reviews = getReviews();
+  if(loader) loader.remove();
+  if(reviews.length === 0){
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
+  reviews.slice().reverse().forEach(r => {
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    const card = document.createElement('div');
+    card.className = 'rv-card fi';
+    card.innerHTML = `
+      <div class="rv-stars">${stars}</div>
+      <p class="rv-text">"${r.text}"</p>
+      <div class="rv-meta">
+        <div>
+          <div class="rv-author">${r.name}</div>
+          ${r.route ? `<div class="rv-route">${r.route}</div>` : ''}
+        </div>
+        <div class="rv-date">${r.date}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  list.innerHTML = '';
+  list.appendChild(grid);
+}
+
+function submitReview(){
+  const name = document.getElementById('rvName').value.trim();
+  const route = document.getElementById('rvRoute').value.trim();
+  const text = document.getElementById('rvText').value.trim();
+  const msg = document.getElementById('rvMsg');
+  const btn = document.getElementById('rvSubmitBtn');
+
+  if(!name){ showRvMsg('Please enter your name.', '#e57373'); return; }
+  if(!currentRating){ showRvMsg('Please select a star rating.', '#e57373'); return; }
+  if(text.length < 20){ showRvMsg('Please write at least a sentence about your experience.', '#e57373'); return; }
+
+  const reviews = getReviews();
+  const now = new Date();
+  reviews.push({
+    name, route, text,
+    rating: currentRating,
+    date: now.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'})
+  });
+  saveReviews(reviews);
+
+  // Reset form
+  document.getElementById('rvName').value = '';
+  document.getElementById('rvRoute').value = '';
+  document.getElementById('rvText').value = '';
+  setRating(0);
+  currentRating = 0;
+
+  showRvMsg('Thank you! Your review is now live.', 'var(--gold)');
+  renderReviews();
+}
+
+function showRvMsg(text, color){
+  const msg = document.getElementById('rvMsg');
+  msg.textContent = text;
+  msg.style.color = color;
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 4000);
+}
+
+document.addEventListener('DOMContentLoaded', renderReviews);
+</script>
 
 <!-- JOURNEY -->
 <section id="journey" style="padding:96px 0;background:var(--navy2)">
