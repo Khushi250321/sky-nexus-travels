@@ -600,7 +600,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
 <script>
 // ── REVIEWS SYSTEM — Google Sheets backend ──
 // STEP 1: Replace this URL with your own after following setup instructions
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxRdhTCUlrNuckz_DwW2vHw7yFjJHj0CImbUKfSke-HFQMvsY9vflQxBvNUXEGg0KotNQ/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyIHOTvmsJVYr9Gm0xGs_QbJTCwg328mARF-iXP9Bmjf4K9QLazhUZc4zvhKqjVuVKx1g/exec';
 let currentRating = 0;
 
 function setRating(n){
@@ -614,11 +614,7 @@ async function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
   try {
-    if(SHEET_URL === 'https://script.google.com/macros/s/AKfycbxRdhTCUlrNuckz_DwW2vHw7yFjJHj0CImbUKfSke-HFQMvsY9vflQxBvNUXEGg0KotNQ/exec'){
-      list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Reviews will appear here once setup is complete.</div>';
-      if(loader) loader.remove();
-      return;
-    }
+
     const res = await fetch(SHEET_URL + '?action=get');
     const reviews = await res.json();
     if(loader) loader.remove();
@@ -661,8 +657,6 @@ async function submitReview(){
   if(!name){ showRvMsg('Please enter your name.', '#e57373'); return; }
   if(!currentRating){ showRvMsg('Please select a star rating.', '#e57373'); return; }
   if(text.length < 20){ showRvMsg('Please write at least a sentence about your experience.', '#e57373'); return; }
-  if(SHEET_URL === 'https://script.google.com/macros/s/AKfycbxRdhTCUlrNuckz_DwW2vHw7yFjJHj0CImbUKfSke-HFQMvsY9vflQxBvNUXEGg0KotNQ/exec'){ showRvMsg('Reviews setup not complete yet.', '#e57373'); return; }
-
   btn.textContent = 'Submitting...';
   btn.disabled = true;
 
