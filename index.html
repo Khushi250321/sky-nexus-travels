@@ -598,8 +598,9 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
 </style>
 
 <script>
-// ── REVIEWS SYSTEM ──
-const STORAGE_KEY = 'snx_reviews_v1';
+// ── REVIEWS SYSTEM — Google Sheets backend ──
+// STEP 1: Replace this URL with your own after following setup instructions
+const SHEET_URL = 'https://script.google.com/u/0/home/projects/1ecKnOt3i14HZwTYDgrIj9fN1sIoUsyv83x7-upmVypmjkOsdGEOO1oEN/edit';
 let currentRating = 0;
 
 function setRating(n){
@@ -609,75 +610,85 @@ function setRating(n){
   });
 }
 
-function getReviews(){
-  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e){ return []; }
-}
-
-function saveReviews(arr){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-}
-
-function renderReviews(){
+async function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
-  const reviews = getReviews();
-  if(loader) loader.remove();
-  if(reviews.length === 0){
-    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
-    return;
+  try {
+    if(SHEET_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE'){
+      list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Reviews will appear here once setup is complete.</div>';
+      if(loader) loader.remove();
+      return;
+    }
+    const res = await fetch(SHEET_URL + '?action=get');
+    const reviews = await res.json();
+    if(loader) loader.remove();
+    if(!reviews.length){
+      list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
+      return;
+    }
+    const grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
+    reviews.slice().reverse().forEach(r => {
+      const stars = '★'.repeat(Number(r.rating)) + '☆'.repeat(5 - Number(r.rating));
+      const card = document.createElement('div');
+      card.className = 'rv-card fi';
+      card.innerHTML = `
+        <div class="rv-stars">${stars}</div>
+        <p class="rv-text">"${r.text}"</p>
+        <div class="rv-meta">
+          <div>
+            <div class="rv-author">${r.name}</div>
+            ${r.route ? `<div class="rv-route">${r.route}</div>` : ''}
+          </div>
+          <div class="rv-date">${r.date}</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+    list.innerHTML = '';
+    list.appendChild(grid);
+  } catch(e){
+    if(loader) loader.remove();
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Could not load reviews right now.</div>';
   }
-  const grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
-  reviews.slice().reverse().forEach(r => {
-    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-    const card = document.createElement('div');
-    card.className = 'rv-card fi';
-    card.innerHTML = `
-      <div class="rv-stars">${stars}</div>
-      <p class="rv-text">"${r.text}"</p>
-      <div class="rv-meta">
-        <div>
-          <div class="rv-author">${r.name}</div>
-          ${r.route ? `<div class="rv-route">${r.route}</div>` : ''}
-        </div>
-        <div class="rv-date">${r.date}</div>
-      </div>`;
-    grid.appendChild(card);
-  });
-  list.innerHTML = '';
-  list.appendChild(grid);
 }
 
-function submitReview(){
+async function submitReview(){
   const name = document.getElementById('rvName').value.trim();
   const route = document.getElementById('rvRoute').value.trim();
   const text = document.getElementById('rvText').value.trim();
-  const msg = document.getElementById('rvMsg');
   const btn = document.getElementById('rvSubmitBtn');
 
   if(!name){ showRvMsg('Please enter your name.', '#e57373'); return; }
   if(!currentRating){ showRvMsg('Please select a star rating.', '#e57373'); return; }
   if(text.length < 20){ showRvMsg('Please write at least a sentence about your experience.', '#e57373'); return; }
+  if(SHEET_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE'){ showRvMsg('Reviews setup not complete yet.', '#e57373'); return; }
 
-  const reviews = getReviews();
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
   const now = new Date();
-  reviews.push({
-    name, route, text,
-    rating: currentRating,
-    date: now.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'})
-  });
-  saveReviews(reviews);
+  const date = now.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
 
-  // Reset form
-  document.getElementById('rvName').value = '';
-  document.getElementById('rvRoute').value = '';
-  document.getElementById('rvText').value = '';
-  setRating(0);
-  currentRating = 0;
-
-  showRvMsg('Thank you! Your review is now live.', 'var(--gold)');
-  renderReviews();
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action:'add', name, route, text, rating: currentRating, date})
+    });
+    document.getElementById('rvName').value = '';
+    document.getElementById('rvRoute').value = '';
+    document.getElementById('rvText').value = '';
+    setRating(0); currentRating = 0;
+    btn.textContent = 'Submit Review →';
+    btn.disabled = false;
+    showRvMsg('Thank you! Your review is now live.', 'var(--gold)');
+    setTimeout(renderReviews, 1500);
+  } catch(e){
+    btn.textContent = 'Submit Review →';
+    btn.disabled = false;
+    showRvMsg('Something went wrong. Please try again.', '#e57373');
+  }
 }
 
 function showRvMsg(text, color){
