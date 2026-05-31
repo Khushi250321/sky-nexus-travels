@@ -614,7 +614,7 @@ async function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
   try {
-    if(SHEET_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE'){
+    if(SHEET_URL === 'https://script.google.com/u/0/home/projects/1ecKnOt3i14HZwTYDgrIj9fN1sIoUsyv83x7-upmVypmjkOsdGEOO1oEN/edit'){
       list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Reviews will appear here once setup is complete.</div>';
       if(loader) loader.remove();
       return;
@@ -661,7 +661,7 @@ async function submitReview(){
   if(!name){ showRvMsg('Please enter your name.', '#e57373'); return; }
   if(!currentRating){ showRvMsg('Please select a star rating.', '#e57373'); return; }
   if(text.length < 20){ showRvMsg('Please write at least a sentence about your experience.', '#e57373'); return; }
-  if(SHEET_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE'){ showRvMsg('Reviews setup not complete yet.', '#e57373'); return; }
+  if(SHEET_URL === 'https://script.google.com/u/0/home/projects/1ecKnOt3i14HZwTYDgrIj9fN1sIoUsyv83x7-upmVypmjkOsdGEOO1oEN/edit'){ showRvMsg('Reviews setup not complete yet.', '#e57373'); return; }
 
   btn.textContent = 'Submitting...';
   btn.disabled = true;
