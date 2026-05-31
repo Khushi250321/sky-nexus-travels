@@ -610,54 +610,50 @@ function setRating(n){
   });
 }
 
-function buildGrid(reviews){
-  const list = document.getElementById('reviewsList');
-  const loader = document.getElementById('rvLoading');
-  if(loader) loader.remove();
-  if(!reviews || !reviews.length){
-    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
-    return;
+// ── HARDCODED REVIEWS — add new ones here after customers submit ──
+// Format: {name, route, rating, text, date}
+const STATIC_REVIEWS = [
+  {
+    name: 'Khushi',
+    route: 'Delhi to Hyderabad',
+    rating: 5,
+    text: 'Had a wonderful experience with this travel agency. Everything was managed smoothly from start to finish, and even at the last moment, all my concerns were handled efficiently. The entire journey from Delhi to Hyderabad was hassle-free and comfortable. Highly recommended for their excellent service!',
+    date: '1 Jun 2026'
   }
-  const grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
-  reviews.slice().reverse().forEach(r => {
-    const rating = Math.min(5, Math.max(0, Number(r.rating)||0));
-    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
-    const card = document.createElement('div');
-    card.className = 'rv-card fi';
-    card.innerHTML = `
-      <div class="rv-stars">${stars}</div>
-      <p class="rv-text">"${r.text}"</p>
-      <div class="rv-meta">
-        <div>
-          <div class="rv-author">${r.name}</div>
-          ${r.route ? `<div class="rv-route">${r.route}</div>` : ''}
-        </div>
-        <div class="rv-date">${r.date}</div>
-      </div>`;
-    grid.appendChild(card);
-  });
-  list.innerHTML = '';
-  list.appendChild(grid);
-  document.querySelectorAll('.rv-card').forEach(el => io.observe(el));
+];
+
+function makeCard(r){
+  const rating = Math.min(5, Math.max(0, Number(r.rating)||0));
+  const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  const card = document.createElement('div');
+  card.className = 'rv-card fi';
+  card.innerHTML = `
+    <div class="rv-stars">${stars}</div>
+    <p class="rv-text">"${r.text}"</p>
+    <div class="rv-meta">
+      <div>
+        <div class="rv-author">${r.name}</div>
+        ${r.route ? `<div class="rv-route">${r.route}</div>` : ''}
+      </div>
+      <div class="rv-date">${r.date}</div>
+    </div>`;
+  return card;
 }
 
 function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
-  // Remove any old script tag
-  const old = document.getElementById('_rvs');
-  if(old) old.remove();
-  // JSONP — bypasses CORS completely
-  window._rvCB = function(data){ buildGrid(data); };
-  const s = document.createElement('script');
-  s.id = '_rvs';
-  s.src = SCRIPT_URL + '?callback=_rvCB&t=' + Date.now();
-  s.onerror = function(){
-    if(loader) loader.remove();
-    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Could not load reviews. Please refresh the page.</div>';
-  };
-  document.head.appendChild(s);
+  if(loader) loader.remove();
+  if(!STATIC_REVIEWS.length){
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
+  STATIC_REVIEWS.slice().reverse().forEach(r => grid.appendChild(makeCard(r)));
+  list.innerHTML = '';
+  list.appendChild(grid);
+  document.querySelectorAll('.rv-card').forEach(el => io.observe(el));
 }
 
 async function submitReview(){
@@ -689,8 +685,20 @@ async function submitReview(){
     setRating(0); currentRating = 0;
     btn.textContent = 'Submit Review →';
     btn.disabled = false;
-    showRvMsg('Thank you! Your review has been submitted.', 'var(--gold)');
-    setTimeout(renderReviews, 3000);
+    // Show new review instantly on page
+    const now2 = new Date();
+    const newR = {name, route, text, rating: currentRating, date: now2.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'})};
+    let grid = document.querySelector('#reviewsList .rv-card')?.parentElement;
+    if(!grid){
+      grid = document.createElement('div');
+      grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px';
+      document.getElementById('reviewsList').innerHTML = '';
+      document.getElementById('reviewsList').appendChild(grid);
+    }
+    const card = makeCard(newR);
+    grid.insertBefore(card, grid.firstChild);
+    setTimeout(()=>{ card.classList.add('vis'); io.observe(card); }, 50);
+    showRvMsg('Thank you! Your review is now live.', 'var(--gold)');
   } catch(e){
     btn.textContent = 'Submit Review →';
     btn.disabled = false;
