@@ -610,15 +610,15 @@ function setRating(n){
   });
 }
 
-async function renderReviews(){
+function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
-  try {
 
-    const res = await fetch(SHEET_URL + '?action=get');
-    const reviews = await res.json();
+  window._reviewsCB = function(reviews){
     if(loader) loader.remove();
-    if(!reviews.length){
+    const old = document.getElementById('rvScript');
+    if(old) old.remove();
+    if(!reviews || !reviews.length){
       list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
       return;
     }
@@ -642,10 +642,17 @@ async function renderReviews(){
     });
     list.innerHTML = '';
     list.appendChild(grid);
-  } catch(e){
+    document.querySelectorAll('.rv-card').forEach(el => io.observe(el));
+  };
+
+  const s = document.createElement('script');
+  s.id = 'rvScript';
+  s.src = SHEET_URL + '?callback=_reviewsCB';
+  s.onerror = function(){
     if(loader) loader.remove();
     list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Could not load reviews right now.</div>';
-  }
+  };
+  document.head.appendChild(s);
 }
 
 async function submitReview(){
@@ -677,7 +684,7 @@ async function submitReview(){
     btn.textContent = 'Submit Review →';
     btn.disabled = false;
     showRvMsg('Thank you! Your review is now live.', 'var(--gold)');
-    setTimeout(renderReviews, 1500);
+    setTimeout(renderReviews, 2000);
   } catch(e){
     btn.textContent = 'Submit Review →';
     btn.disabled = false;
