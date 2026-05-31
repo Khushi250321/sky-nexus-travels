@@ -599,12 +599,7 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 0 
 
 <script>
 // ── REVIEWS SYSTEM ──
-// POST (submit) goes to Apps Script — works fine with no-cors
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIHOTvmsJVYr9Gm0xGs_QbJTCwg328mARF-iXP9Bmjf4K9QLazhUZc4zvhKqjVuVKx1g/exec';
-// GET (read) uses public CSV export — no CORS issues at all
-// IMPORTANT: Replace SHEET_ID below with your actual Google Sheet ID from the URL
-const SHEET_ID = '1_oYdRxecCzqGeDuO8HJNKUEv7OuFB3UKRGJcu_-VIz8';
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
 let currentRating = 0;
 
@@ -615,31 +610,11 @@ function setRating(n){
   });
 }
 
-function parseCSV(csv){
-  const lines = csv.trim().split('\n');
-  if(lines.length < 2) return [];
-  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
-  return lines.slice(1).map(line => {
-    // handle commas inside quoted fields
-    const cols = [];
-    let cur = '', inQ = false;
-    for(let c of line){
-      if(c === '"'){ inQ = !inQ; }
-      else if(c === ',' && !inQ){ cols.push(cur.trim()); cur = ''; }
-      else cur += c;
-    }
-    cols.push(cur.trim());
-    const obj = {};
-    headers.forEach((h,i) => obj[h] = (cols[i]||'').replace(/^"|"$/g,''));
-    return obj;
-  }).filter(r => r.name);
-}
-
 function buildGrid(reviews){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
   if(loader) loader.remove();
-  if(!reviews.length){
+  if(!reviews || !reviews.length){
     list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">No reviews yet — be the first to share your experience.</div>';
     return;
   }
@@ -667,18 +642,22 @@ function buildGrid(reviews){
   document.querySelectorAll('.rv-card').forEach(el => io.observe(el));
 }
 
-async function renderReviews(){
+function renderReviews(){
   const list = document.getElementById('reviewsList');
   const loader = document.getElementById('rvLoading');
-  try {
-    const res = await fetch(CSV_URL);
-    const csv = await res.text();
-    const reviews = parseCSV(csv);
-    buildGrid(reviews);
-  } catch(e){
+  // Remove any old script tag
+  const old = document.getElementById('_rvs');
+  if(old) old.remove();
+  // JSONP — bypasses CORS completely
+  window._rvCB = function(data){ buildGrid(data); };
+  const s = document.createElement('script');
+  s.id = '_rvs';
+  s.src = SCRIPT_URL + '?callback=_rvCB&t=' + Date.now();
+  s.onerror = function(){
     if(loader) loader.remove();
-    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Could not load reviews right now.</div>';
-  }
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text2);font-size:14px;font-style:italic">Could not load reviews. Please refresh the page.</div>';
+  };
+  document.head.appendChild(s);
 }
 
 async function submitReview(){
